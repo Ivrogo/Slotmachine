@@ -1,7 +1,32 @@
+import random
+
 MAX_LINES = 3
 MIN_LINES = 1
 MAX_BET = 100
 MIN_BET = 5
+
+COLS = 3
+ROWS = 3
+
+items = {"*": 2, "#": 4, "@": 6, "~": 10}
+
+
+def get_spin(rows, cols, items):
+    all_items = []
+    for item, item_count in items.items():
+        for _ in range(item_count):
+            all_items.append(item)
+
+    columns = [[], [], []]
+    for _ in range(cols):
+        column = []
+        current_items = all_items[:]
+        for _ in range(rows):
+            value = random.choice(current_items)
+            current_items.remove(value)
+            column.append(value)
+
+        columns.append(column)
 
 
 def depositMoney():
