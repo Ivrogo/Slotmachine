@@ -10,6 +10,24 @@ ROWS = 3
 
 items_slots = {"*": 2, "#": 4, "@": 6, "~": 10}
 
+items_values = {"*": 5, "#": 4, "@": 3, "~": 2}
+
+
+def check_winnings(columns, lines, bet, values):
+    winnings = 0
+    winning_lines = []
+    for line in range(lines):
+        item = columns[0][line]
+        for column in columns:
+            item_to_check = column[line]
+            if item != item_to_check:
+                break
+        else:
+            winnings += values[item] * bet
+            winning_lines.append(line + 1)
+
+    return winnings, winning_lines
+
 
 def get_spin(rows, cols, items_slots):
     all_items = []
@@ -100,8 +118,7 @@ def get_bet():
     return amount
 
 
-def main():
-    balance = depositMoney()
+def spin(balance):
     lines = get_number_of_lines()
     while True:
         bet = get_bet()
@@ -111,14 +128,42 @@ def main():
             print(
                 f"There's not enough money to bet that amount, your balance is: ${balance}"
             )
+
         else:
             break
+
     print(
         f"You are betting ${bet} on {lines} lines. Total bet is equal to: ${total_bet}"
     )
 
     slots = get_spin(ROWS, COLS, items_slots)
     print_slots(slots)
+    winnings, winning_lines = check_winnings(slots, lines, bet, items_values)
+    print(f"You won ${winnings}.")
+    print(f"You won on lines:", *winning_lines)
+    return winnings - total_bet
+
+
+def exit_game(balance):
+    while True:
+        if balance == 0:
+            answer = input("Would you like to quit (Q) or Deposit more money (D)")
+            if answer == "q":
+                break
+            if answer == "d":
+                depositMoney()
+
+
+def main():
+    while True:
+        answer = input("Press enter to play (q to quit).")
+        if answer == "q":
+            break
+        balance = depositMoney()
+        balance += spin(balance)
+        print(f"Current balance is ${balance}")
+
+    print(f"You left with ${balance}")
 
 
 main()
