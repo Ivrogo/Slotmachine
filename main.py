@@ -39,6 +39,8 @@ def print_slots(columns):
             else:
                 print(column[row], end="")
 
+        print()
+
 
 def depositMoney():
     while True:
