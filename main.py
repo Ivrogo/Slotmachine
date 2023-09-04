@@ -17,7 +17,7 @@ def get_spin(rows, cols, items_slots):
         for _ in range(item_count):
             all_items.append(item)
 
-    columns = [[], [], []]
+    columns = []
     for _ in range(cols):
         column = []
         current_items = all_items[:]
