@@ -60,19 +60,23 @@ def print_slots(columns):
         print()
 
 
-def depositMoney():
+def depositMoney(balance):
     while True:
-        amount = input("Insert the desired amount: $")
-        if amount.isdigit():
-            amount = int(amount)
-            if amount > 0:
-                break
+        answer = input("Would you like to deposit money?(Y/N)")
+        if answer == "y":
+            amount = input("Insert the desired amount: $")
+            if amount.isdigit():
+                amount = int(amount)
+                if amount > 0:
+                    balance += amount
+                    break
+                else:
+                    print("Amount must be greater than 0")
             else:
-                print("Amount must be greater than 0")
-        else:
-            print("Enter a valid number")
-
-    return amount
+                print("Enter a valid number")
+        elif answer == "n":
+            break
+    return balance
 
 
 def get_number_of_lines():
@@ -128,7 +132,7 @@ def spin(balance):
             print(
                 f"There's not enough money to bet that amount, your balance is: ${balance}"
             )
-
+            break
         else:
             break
 
@@ -144,26 +148,17 @@ def spin(balance):
     return winnings - total_bet
 
 
-def exit_game(balance):
-    while True:
-        if balance == 0:
-            answer = input("Would you like to quit (Q) or Deposit more money (D)")
-            if answer == "q":
-                break
-            if answer == "d":
-                depositMoney()
-
-
 def main():
+    balance = 0
     while True:
         answer = input("Press enter to play (q to quit).")
         if answer == "q":
             break
-        balance = depositMoney()
-        balance += spin(balance)
-        print(f"Current balance is ${balance}")
 
-    print(f"You left with ${balance}")
+        balance = depositMoney(balance)
+        print(f"Current balance is ${balance}")
+        balance += spin(balance)
+        print(f"You left with ${balance}")
 
 
 main()
