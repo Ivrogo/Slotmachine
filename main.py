@@ -8,12 +8,12 @@ MIN_BET = 5
 COLS = 3
 ROWS = 3
 
-items = {"*": 2, "#": 4, "@": 6, "~": 10}
+items_slots = {"*": 2, "#": 4, "@": 6, "~": 10}
 
 
-def get_spin(rows, cols, items):
+def get_spin(rows, cols, items_slots):
     all_items = []
-    for item, item_count in items.items():
+    for item, item_count in items_slots.items():
         for _ in range(item_count):
             all_items.append(item)
 
@@ -27,6 +27,17 @@ def get_spin(rows, cols, items):
             column.append(value)
 
         columns.append(column)
+
+    return columns
+
+
+def print_slots(columns):
+    for row in range(len(columns[0])):
+        for i, column in enumerate(columns):
+            if i != len(columns) - 1:
+                print(column[row], end=" | ")
+            else:
+                print(column[row], end="")
 
 
 def depositMoney():
@@ -103,6 +114,9 @@ def main():
     print(
         f"You are betting ${bet} on {lines} lines. Total bet is equal to: ${total_bet}"
     )
+
+    slots = get_spin(ROWS, COLS, items_slots)
+    print_slots(slots)
 
 
 main()
